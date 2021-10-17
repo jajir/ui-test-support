@@ -1,4 +1,4 @@
-package com.cubicululs.testsupport;
+package com.cubiculus.testsupport;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
@@ -34,7 +34,7 @@ public class TakeScreenshotTestWatcher implements TestWatcher {
         logger.debug("Starting taking screenshot");
         final File destFile = new File(
                 "target" + File.separator + getImageName(getTestMethod(context)));
-        logger.debug("Image will be stored at {}",destFile.getAbsoluteFile().toString());
+        logger.debug("Image will be stored at {}", destFile.getAbsoluteFile().toString());
 
         final WebDriver driver = getWebDriver(context);
         final TakesScreenshot scrShot = (TakesScreenshot) driver;
@@ -69,11 +69,11 @@ public class TakeScreenshotTestWatcher implements TestWatcher {
         }
         // u parametrizovaných testů obsahoval název příliš mnoho dat a uložení padlo
         // na IOException (Too long name)
-        if(ret.length()>120){
-           ret = ret.substring(0, 120);
+        if (ret.length() > 120) {
+            ret = ret.substring(0, 120);
         }
 
-        ret += "." +IMAGE_EXTENSION;
+        ret += "." + IMAGE_EXTENSION;
         return ret;
     }
 

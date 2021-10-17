@@ -1,4 +1,4 @@
-package com.cubicululs.testsupport;
+package com.cubiculus.testsupport;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Manage webdriver. Webdriver allows to control chromium. Initialize it and
@@ -34,16 +36,6 @@ class WebDriverManager {
     private final static Boolean HEADLESS_DEFAULT_VALUE = false;
 
     /**
-     * Chrome drive location system property.
-     */
-    private final static String CHROMEDRIVER_FILE_SYSTEM_PROPERTY_NAME = "chromedriver";
-
-    /**
-     * Default value for chrome driver location.
-     */
-    private final static String CHROMEDRIVER_FILE_DEFAULT_VALUE = "/bin/chromedriver";
-
-    /**
      * System property in which is defined window size.
      */
     private final static String WINDOWS_SIZE_PROPERTY_NAME = "windowSize";
@@ -59,15 +51,19 @@ class WebDriverManager {
 
     private final WebDriver driver;
     private final static String CHROMIUM_WEBDRIVER_LOG_FILE = "target/chromedriver.log";
-    
- 
-    public WebDriverManager() {
-        logger.debug("Starting web driwer");
-        logger.debug("Chrome driver file is at '{}'", getChromedriverExecutable());
+
+    public WebDriverManager(final File chromiumExecutable) {
+        Preconditions.checkArgument(chromiumExecutable != null, "chromiumExecutable is null");
+        logger.debug("Starting web driver");
+        logger.debug("Chrome driver file is at '{}'", chromiumExecutable);
         logger.debug("Headless mode is enabled '{}'", isHeadless());
         logger.debug("Window size is '{}'", getWindowsSize());
+        Preconditions.checkArgument(chromiumExecutable.exists(),
+                "chromiumExecutable at '%s' doesn't exists", chromiumExecutable);
+        Preconditions.checkArgument(chromiumExecutable.isFile(),
+                "chromiumExecutable at '%s' is not valid file", chromiumExecutable);
 
-        // Set webdriver logging if it wasn't alreeady set
+        // Set webdriver logging if it wasn't already set
         if (System.getProperty("webdriver.chrome.logfile") == null) {
             final File file = new File(CHROMIUM_WEBDRIVER_LOG_FILE);
             System.setProperty("webdriver.chrome.logfile", file.getAbsolutePath());
@@ -80,18 +76,17 @@ class WebDriverManager {
         }
 
         try {
-            service = new ChromeDriverService.Builder()
-                    .usingDriverExecutable(getChromedriverExecutable()).usingAnyFreePort().build();
+            service = new ChromeDriverService.Builder().usingDriverExecutable(chromiumExecutable)
+                    .usingAnyFreePort().build();
             service.start();
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-        
-        
+
         final HashMap<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
         chromePrefs.put("download.default_directory", AbstractBaseTest.DOWNLOAD_FILE_PATH);
-        
+
         final ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", chromePrefs);
         options.setHeadless(isHeadless());
@@ -124,11 +119,6 @@ class WebDriverManager {
         return str == null ? HEADLESS_DEFAULT_VALUE : Boolean.valueOf(str);
     }
 
-    private File getChromedriverExecutable() {
-        final String str = System.getProperty(CHROMEDRIVER_FILE_SYSTEM_PROPERTY_NAME);
-        return str == null ? new File(CHROMEDRIVER_FILE_DEFAULT_VALUE) : new File(str.trim());
-    }
-
     private String getWindowsSize() {
         final String str = System.getProperty(WINDOWS_SIZE_PROPERTY_NAME);
         return str == null ? WINDOWS_SIZE_DEFAULT_VALUE : str;
@@ -139,7 +129,7 @@ class WebDriverManager {
     }
 
     public void close() {
-        logger.debug("Closing web driwer");
+        logger.debug("Closing web driver");
         service.stop();
     }
 }

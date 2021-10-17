@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.cubicululs.testsupport.util.PathUtil;
+import com.cubiculus.testsupport.util.PathUtil;
 
 public class PathUtilTest {
 
@@ -69,7 +69,6 @@ public class PathUtilTest {
         assertEquals(expectedResult, result, String
                 .format("Expected string is '%s' but returned is '%s'", expectedResult, result));
     }
-
 
     private static Stream<Arguments> dataProviderForGetServerPart() {
         return Stream.of(//

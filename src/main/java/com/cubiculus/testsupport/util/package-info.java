@@ -1,4 +1,4 @@
-package com.cubicululs.testsupport.util;
+package com.cubiculus.testsupport.util;
 /**
  * Package with test utilities.
  * 

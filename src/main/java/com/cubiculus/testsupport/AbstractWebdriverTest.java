@@ -1,4 +1,4 @@
-package com.cubicululs.testsupport;
+package com.cubiculus.testsupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,26 +17,6 @@ import com.google.common.base.Preconditions;
  *
  */
 public abstract class AbstractWebdriverTest {
-
-    private final static String RANDOM_TEXT_PIECE = "0123456789";
-
-    /**
-     * Umoznuje oznacit testy, ktere meni data.
-     */
-    protected final static String CHANGE_DATA = "changeData";
-
-    /**
-     * Umoznuje oznacit testy, ktere nemeni data. Takove to testy pak lze poustet na
-     * produkci.
-     */
-    protected final static String PRESERVE_DATA = "preserveData";
-
-    /**
-     * Umoznuje oznacit testy, ktere chceme automaticky spoustet na CI a pri buildu
-     * vetve. Vzdy budou testy, ktere jsou nestabilni, nebo vy vyvoji, nebo vypnute,
-     * ktere nebudeme chtit provadet.
-     */
-    protected final static String SAFE_TEST = "safeTest";
 
     private WebDriver driver;
 
@@ -73,21 +53,6 @@ public abstract class AbstractWebdriverTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Method generate random text of some length. It's useful for testing too long
-     * strings.
-     * 
-     * @param length
-     * @return
-     */
-    protected String getRandomText(final int length) {
-        final StringBuilder stringBuilder = new StringBuilder(5000);
-        for (int len = 0; len < length; len += RANDOM_TEXT_PIECE.length()) {
-            stringBuilder.append(RANDOM_TEXT_PIECE);
-        }
-        return stringBuilder.toString();
     }
 
     @BeforeEach

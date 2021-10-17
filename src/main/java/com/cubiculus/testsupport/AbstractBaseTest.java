@@ -1,4 +1,4 @@
-package com.cubicululs.testsupport;
+package com.cubiculus.testsupport;
 
 import com.google.common.base.Preconditions;
 import java.io.File;
@@ -23,13 +23,13 @@ public abstract class AbstractBaseTest extends AbstractWebdriverTest {
      * Project relative path containing test data files.
      */
     public final static String TEST_DATA_FOLDER = "src/test/data";
-    
+
     /**
      * Folder for temporary downloads
      */
-    public final static String DOWNLOAD_FILE_PATH = Paths.get("target" + File.separator + "download").toAbsolutePath().toString();
+    public final static String DOWNLOAD_FILE_PATH = Paths
+            .get("target" + File.separator + "download").toAbsolutePath().toString();
 
-    
     /**
      * Provide font-end server URL.
      *

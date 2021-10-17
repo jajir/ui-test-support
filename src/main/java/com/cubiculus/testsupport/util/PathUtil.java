@@ -1,4 +1,4 @@
-package com.cubicululs.testsupport.util;
+package com.cubiculus.testsupport.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
